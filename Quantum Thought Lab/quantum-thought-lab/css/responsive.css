@@ -1,0 +1,167 @@
+/* Tablet Styles (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    :root {
+        --sidebar-width: 200px;
+        --control-panel-width: 250px;
+    }
+
+    .experiment-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+/* Mobile Styles (< 768px) */
+@media screen and (max-width: 768px) {
+    :root {
+        --header-height: 50px;
+        --sidebar-width: 100%;
+        --control-panel-width: 100%;
+    }
+
+    .app-header h1 {
+        font-size: 1.2rem;
+    }
+
+    /* Sidebar becomes a drawer */
+    .sidebar {
+        transform: translateX(-100%);
+        z-index: 999;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    /* Main content takes full width */
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    /* Experiment grid adjusts for mobile */
+    .experiment-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Experiment container stacks vertically */
+    .experiment-container {
+        flex-direction: column;
+        height: auto;
+        gap: 1rem;
+    }
+
+    .visualization-area {
+        height: 60vh;
+    }
+
+    /* Control panel moves to bottom */
+    .control-panel {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 998;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        max-height: 50vh;
+        transform: translateY(calc(100% - 3rem));
+        transition: transform var(--transition-speed);
+    }
+
+    .control-panel.expanded {
+        transform: translateY(0);
+    }
+
+    .control-panel-header {
+        cursor: pointer;
+        padding: 0.5rem;
+        margin: -1rem -1rem 0;
+        background-color: var(--surface-color);
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        position: sticky;
+        top: 0;
+    }
+
+    /* Overlay adjustments for mobile */
+    .overlay-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+}
+
+/* Small Mobile Styles (< 480px) */
+@media screen and (max-width: 480px) {
+    .app-header {
+        padding: 0 0.5rem;
+    }
+
+    .header-right {
+        gap: 0.5rem;
+    }
+
+    .icon-button {
+        padding: 0.3rem;
+    }
+
+    .icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .experiment-card {
+        padding: 1rem;
+    }
+
+    .visualization-area {
+        height: 50vh;
+    }
+}
+
+/* Landscape Mode Adjustments */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .visualization-area {
+        height: 70vh;
+    }
+
+    .control-panel {
+        max-height: 70vh;
+    }
+}
+
+/* High DPI Screens */
+@media screen and (min-resolution: 2dppx) {
+    .icon {
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .app-header,
+    .sidebar,
+    .control-panel,
+    .icon-button,
+    .overlay {
+        display: none !important;
+    }
+
+    .main-content {
+        margin: 0;
+        padding: 0;
+    }
+
+    .visualization-area {
+        page-break-inside: avoid;
+        border: 1px solid #000;
+    }
+} 

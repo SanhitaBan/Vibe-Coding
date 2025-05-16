@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Persistent Pattern Detector</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Persistent Pattern Detector</h1>
+    <p class="tagline">Find repeating sequences in your text</p>
+    <button id="helpBtn" aria-label="Show help/instructions" title="Help">?</button>
+  </header>
+  <main class="app-main">
+    <section class="input-section" aria-labelledby="inputLabel">
+      <label id="inputLabel" for="inputText">Input Data</label>
+      <textarea id="inputText" rows="10" placeholder="Enter text or sequence here..." aria-describedby="inputDesc"></textarea>
+      <div id="inputDesc" class="input-desc">Paste or type your text. Optionally, upload a .txt file.</div>
+      <div class="input-controls">
+        <input type="file" id="fileInput" accept=".txt" aria-label="Upload text file">
+        <div class="settings">
+          <label for="minLength">Min pattern length:
+            <input type="number" id="minLength" min="1" max="10" value="2" aria-label="Minimum pattern length">
+          </label>
+          <label for="caseSensitive">
+            <input type="checkbox" id="caseSensitive"> Case sensitive
+          </label>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button id="detectBtn" class="primary" aria-label="Detect patterns">Detect Pattern</button>
+        <button id="clearBtn" aria-label="Clear input and results" disabled>Clear</button>
+        <span id="charCount" class="char-count" aria-live="polite"></span>
+      </div>
+      <div id="inputError" class="error-message" role="alert" aria-live="assertive"></div>
+    </section>
+    <section class="results-section" aria-labelledby="resultsLabel">
+      <h2 id="resultsLabel">Detected Patterns</h2>
+      <div id="resultsMessage" class="results-message" aria-live="polite"></div>
+      <ul id="patternsList" class="patterns-list" tabindex="0" aria-label="Patterns list"></ul>
+      <div id="highlightedTextContainer" class="highlighted-text-container" tabindex="0" aria-label="Highlighted input text"></div>
+      <div id="loadingOverlay" class="loading-overlay" hidden>
+        <div class="spinner"></div>
+        <span>Analyzing...</span>
+      </div>
+    </section>
+  </main>
+  <footer class="app-footer">
+    <p>All analysis is done in your browser. No data is sent to a server.</p>
+    <a href="#" id="clearStorage" tabindex="0">Clear saved data</a>
+  </footer>
+  <div id="helpModal" class="modal" hidden>
+    <div class="modal-content">
+      <button id="closeHelp" class="close-modal" aria-label="Close help">&times;</button>
+      <h2>How to Use</h2>
+      <ul>
+        <li>Enter or paste your text in the input area, or upload a .txt file.</li>
+        <li>Adjust settings for minimum pattern length and case sensitivity as needed.</li>
+        <li>Click <b>Detect Pattern</b> to find repeating sequences.</li>
+        <li>Click a pattern in the list to focus its highlights in the text.</li>
+        <li>Click <b>Clear</b> to start a new analysis.</li>
+      </ul>
+      <p>All processing is local and private.</p>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html> 

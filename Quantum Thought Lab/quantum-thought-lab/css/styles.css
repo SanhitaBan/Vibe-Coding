@@ -1,0 +1,595 @@
+:root {
+    /* Light theme variables */
+    --primary-color: #6200ee;
+    --secondary-color: #03dac6;
+    --background-color: #ffffff;
+    --surface-color: #f5f5f5;
+    --text-color: #000000;
+    --text-secondary: #666666;
+    --border-color: #e0e0e0;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    
+    /* Common variables */
+    --header-height: 60px;
+    --sidebar-width: 250px;
+    --control-panel-width: 300px;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+    
+    /* New theme variables */
+    --error-color: #b00020;
+    --success-color: #00c853;
+    --warning-color: #f57c00;
+    --info-color: #2196f3;
+    
+    /* Accessibility variables */
+    --focus-outline-color: #000000;
+    --focus-outline-width: 2px;
+    --high-contrast-ratio: 1;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+    --primary-color: #bb86fc;
+    --secondary-color: #03dac6;
+    --background-color: #121212;
+    --surface-color: #1e1e1e;
+    --text-color: #ffffff;
+    --text-secondary: #a0a0a0;
+    --border-color: #333333;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --focus-outline-color: #ffffff;
+}
+
+/* High Contrast theme */
+[data-high-contrast="true"] {
+    --primary-color: #ffffff;
+    --secondary-color: #ffff00;
+    --background-color: #000000;
+    --surface-color: #000000;
+    --text-color: #ffffff;
+    --text-secondary: #ffffff;
+    --border-color: #ffffff;
+    --shadow-color: rgba(255, 255, 255, 0.3);
+    --high-contrast-ratio: 2;
+}
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* Layout */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 1000;
+}
+
+.header-left, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sidebar {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    background-color: var(--surface-color);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    transform: translateX(0);
+    transition: transform var(--transition-speed);
+}
+
+.sidebar.collapsed {
+    transform: translateX(calc(-1 * var(--sidebar-width)));
+}
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    margin-top: var(--header-height);
+    padding: 2rem;
+    min-height: calc(100vh - var(--header-height));
+    transition: margin-left var(--transition-speed);
+}
+
+.main-content.expanded {
+    margin-left: 0;
+}
+
+/* Components */
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-speed);
+}
+
+.icon-button:hover {
+    background-color: var(--shadow-color);
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--text-color);
+}
+
+.screen {
+    display: none;
+}
+
+.screen.active {
+    display: block;
+}
+
+/* Experiment Grid */
+.experiment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.experiment-card {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.experiment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+/* Experiment Screen */
+.experiment-container {
+    display: flex;
+    gap: 2rem;
+    height: calc(100vh - var(--header-height) - 4rem);
+}
+
+.visualization-area {
+    flex: 1;
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: hidden;
+}
+
+#experiment-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.control-panel {
+    width: var(--control-panel-width);
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.control-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.control-panel-content {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.overlay-content {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* New Components */
+
+/* Error Overlay */
+.error-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.error-content {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 6px var(--shadow-color);
+}
+
+.error-content h3 {
+    color: var(--error-color);
+    margin-bottom: 1rem;
+}
+
+/* Performance Monitor */
+.performance-monitor {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background-color: var(--surface-color);
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.performance-monitor:hover {
+    opacity: 1;
+}
+
+/* Accessibility Enhancements */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+[data-high-contrast="true"] * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/* Focus styles */
+:focus {
+    outline: var(--focus-outline-width) solid var(--focus-outline-color);
+    outline-offset: 2px;
+}
+
+/* Touch target sizes */
+@media (pointer: coarse) {
+    button,
+    .icon-button,
+    input[type="range"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    input[type="checkbox"],
+    input[type="radio"] {
+        transform: scale(1.5);
+        margin: 0.5rem;
+    }
+}
+
+/* Font size adjustments */
+[data-font-size="large"] {
+    font-size: 120%;
+}
+
+[data-font-size="larger"] {
+    font-size: 150%;
+}
+
+/* Animation controls */
+[data-reduced-motion="true"] {
+    --transition-speed: 0s;
+}
+
+/* Enhanced visualization container */
+.visualization-area {
+    position: relative;
+    overflow: hidden;
+}
+
+.visualization-area canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* WebGL support message */
+.webgl-notice {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--surface-color);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    max-width: 80%;
+}
+
+/* Performance mode indicator */
+.performance-mode {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    background-color: var(--surface-color);
+    opacity: 0.8;
+}
+
+/* History panel */
+.history-panel {
+    position: fixed;
+    right: -300px;
+    top: var(--header-height);
+    bottom: 0;
+    width: 300px;
+    background-color: var(--surface-color);
+    transition: right var(--transition-speed);
+    z-index: 900;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.history-panel.visible {
+    right: 0;
+}
+
+/* Enhanced tooltips */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem;
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-speed);
+}
+
+[data-tooltip]:hover:before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Quantum Entanglement Experiment Styles */
+.basis-selection {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.basis-selection button {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    background: var(--surface-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.basis-selection button.active {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.statistics {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+}
+
+.statistics h4 {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.statistics p {
+    margin: 0.25rem 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+#bell-state {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--surface-color);
+    color: var(--text-color);
+    font-family: inherit;
+    margin-top: 0.5rem;
+}
+
+/* Quantum State Visualization */
+.visualization-area {
+    position: relative;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.visualization-area canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Measurement Results */
+.measurement-result {
+    position: absolute;
+    padding: 0.25rem 0.5rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.measurement-result.visible {
+    opacity: 1;
+}
+
+/* Bell State Selection */
+.bell-state-selector {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.bell-state-card {
+    padding: 1rem;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.bell-state-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.bell-state-card.selected {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* Correlation Display */
+.correlation-display {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface-color);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+/* Animation Effects */
+@keyframes measure {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.measuring {
+    animation: measure 0.3s ease-out;
+}
+
+/* Accessibility Enhancements */
+.basis-selection button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+/* High Contrast Adjustments */
+[data-high-contrast="true"] .basis-selection button.active {
+    background: #fff;
+    color: #000;
+    border: 2px solid #fff;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .measuring {
+        animation: none;
+    }
+    
+    .bell-state-card:hover {
+        transform: none;
+    }
+} 
